@@ -1,0 +1,8 @@
+- name: Install common npm utilities
+  become_user: "{{ lookup('vars', 'username') }}"
+  npm: 'name={{item}} state=present global=yes'
+  with_items: '{{npm_g_pkgs}}'
+  tags:
+    - install
+    - npm
+

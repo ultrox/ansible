@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+# $1 should be file
+ansible-vault encrypt $1
+
+
+

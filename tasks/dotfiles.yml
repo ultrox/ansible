@@ -1,0 +1,20 @@
+- name: Cloning .dotfiles
+  become_user: "{{ lookup('vars', 'username') }}"
+  ansible.builtin.git:
+    repo: '{{ dotfiles_git }}'
+    dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
+    recursive: yes
+    update: yes
+    accept_hostkey: yes
+    version: main
+    key_file: "{{ dest_key }}"
+  tags:
+    - install
+    - dotfiles
+
+- name: Cloning .dotfiles
+  become_user: "{{ lookup('vars', 'username') }}"
+  shell: "{{ lookup('env', 'HOME') }}/.dotfiles/install"
+  tags:
+    - install
+    - dotfiles

@@ -1,0 +1,125 @@
+- name: Install System Packages
+  become: true
+  when: ansible_facts['distribution'] == "Archlinux"
+  pacman: name={{item}}
+  with_items:
+    - xscape
+    - pyenv
+    - xclip
+    - dunst
+    - acpi
+    - exa
+    - bat
+    - lua
+    - luarocks
+    - fzf
+    - ack
+    - adobe-source-han-sans-jp-fonts
+    - aegisub
+    - alacritty
+    - arandr
+    - baobab
+    - bleachbit
+    - blueman
+    - brightnessctl
+    - chromium
+    - code
+    - dbeaver
+    - discord
+    - docker
+    - docker-compose
+    - fcitx-configtool
+    - fcitx-mozc
+    - fcitx-qt5
+    - feh
+    - ffmpeg
+    - ffmpegthumbnailer
+    - firefox
+    - firefox-developer-edition
+    - flameshot
+    - gparted
+    - htop
+    - jq
+    - kdenlive
+    - libreoffice-fresh
+    - lxappearance
+    - mkvtoolnix-gui
+    - mpd
+    - nautilus
+    - ncmpcpp
+    - neofetch
+    - neovim
+    - newsboat
+    - obs-studio
+    - pavucontrol
+    - pulseaudio-bluetooth
+    - pulsemixer
+    - rclone
+    - redshift
+    - remmina
+    - signal-desktop
+    - sox
+    - sxhkd
+    - tlp
+    - tmux
+    - tree
+    - udiskie
+    - youtube-dl
+    - zathura
+    - zathura-pdf-mupdf
+    - rofi
+    - kitty
+
+  tags:
+    - install
+    - pacman
+    - linux
+
+
+- name: "Ensure directory .local/bin"
+  file: 
+    path: "{{ lookup('env', 'HOME') }}/.local/bin"
+    state: "directory"
+  tags: 
+    - dygma
+    - install
+
+    
+- name: "Ensure directory exists"
+  file: 
+    path: "{{ lookup('env', 'HOME') }}/packages"
+    path: "{{ lookup('env', 'HOME') }}/.local/bin"
+    state: "directory"
+  tags: 
+    - install
+    - dygma
+
+- name: "Download Raise keyboard configure"
+  get_url:
+    url: "https://github.com/Dygmalab/Bazecor/releases/download/v0.3.4/Bazecor-0.3.4.AppImage"
+    dest: "{{ lookup('env', 'HOME') }}/packages/dygma-configurator"
+  tags:
+    - install
+    - pacman
+    - dygma
+
+- name: "Make configuration executable"
+  file:
+    path: "{{ lookup('env', 'HOME') }}/packages/dygma-configurator"
+    mode: 0755
+  tags:
+    - install
+    - pacman
+    - dygma
+
+- name: "Symling to .local/bin"
+  file:
+    src: "{{ lookup('env', 'HOME') }}/packages/dygma-configurator"
+    dest: "{{ lookup('env', 'HOME') }}/.local/bin/dygma-configurator"
+    state: link
+  tags:
+    - link
+    - install
+    - pacman
+    - dygma
+

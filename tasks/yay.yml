@@ -1,0 +1,14 @@
+- name: Install packages
+  become: true
+  when: ansible_facts['distribution'] == "Archlinux"
+  yay: name={{item}}
+  with_items:
+    - postman-bin
+    - slack-desktop
+    - google-chrome
+      #- visual-studio-code-bin
+  tags:
+    - install
+    - yay
+    - linux
+

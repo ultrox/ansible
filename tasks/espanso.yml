@@ -1,0 +1,41 @@
+- name: Ensure espanso directory exists.
+  become_user: "{{ lookup('vars', 'username') }}"
+  file:
+    dest: "{{ lookup('vars', 'espanso_dir') }}"
+    mode: 0700
+    state: directory
+  tags:
+    - espanso
+    - install
+
+- name: Ensure espanso user config directory exists.
+  become_user: "{{ lookup('vars', 'username') }}"
+  file:
+    dest: "{{ lookup('vars', 'espanso_dir') }}/user"
+    mode: 0700
+    state: directory
+  tags:
+    - espanso
+    - install
+
+- name: Install espanso conf
+  become_user: "{{ lookup('vars', 'username') }}"
+  copy:
+    src: "./espanso/default.yml"
+    dest: "{{ lookup('vars', 'espanso_dir') }}/default.yml"
+    decrypt: yes
+  tags:
+    - espanso
+    - install
+
+- name: Install espanso user conf files
+  become_user: "{{ lookup('vars', 'username') }}"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ lookup('vars', 'espanso_dir') }}/user"
+    decrypt: yes
+  with_fileglob:
+     - "./espanso/user/*"
+  tags:
+    - espanso
+    - install

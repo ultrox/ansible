@@ -1,0 +1,25 @@
+- name: Install ZSH
+  become: true
+  pacman: name=zsh
+  when: ansible_facts['distribution'] == "Archlinux"
+  tags:
+    - install
+    - dotfiles
+    - zsh
+- name: Change shell to zsh
+  become: true
+  shell: chsh -s $(which zsh)
+  tags:
+    - install
+    - dotfiles
+    - zsh
+
+- name: Creates packages directory
+  become_user: "{{ lookup('vars', 'username') }}"
+  file:
+    path: "{{ lookup('env', 'HOME') }}/packages"
+    state: directory
+  tags:
+    - install
+    - zsh
+    - dotfiles
