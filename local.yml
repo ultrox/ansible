@@ -6,6 +6,7 @@
     N_PREFIX: "{{ lookup('env', 'HOME') }}/.local"
   vars:
     dotfiles: "git@github.com:ultrox/dotfiles3.git"
+    source_key: ".ssh/id_rsa"
     dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
     npm_g_pkgs:
       - yarn
