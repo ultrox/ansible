@@ -3,6 +3,8 @@
   when: ansible_facts['distribution'] == "Archlinux"
   pacman: name={{item}}
   with_items:
+    - tree-sitter
+    - ttf-nerd-fonts-symbols
     - xscape
     - pyenv
     - xclip
@@ -22,7 +24,6 @@
     - bleachbit
     - blueman
     - brightnessctl
-    - chromium
     - code
     - dbeaver
     - discord
@@ -41,9 +42,6 @@
     - htop
     - jq
     - kdenlive
-    - libreoffice-fresh
-    - lxappearance
-    - mkvtoolnix-gui
     - mpd
     - nautilus
     - ncmpcpp
@@ -58,8 +56,6 @@
     - redshift
     - remmina
     - signal-desktop
-    - sox
-    - sxhkd
     - tlp
     - tmux
     - tree
