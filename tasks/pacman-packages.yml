@@ -3,6 +3,7 @@
   when: ansible_facts['distribution'] == "Archlinux"
   pacman: name={{item}}
   with_items:
+    - diff-so-fancy
     - github-cli
     - tree-sitter
     - ttf-nerd-fonts-symbols
@@ -27,7 +28,6 @@
     - brightnessctl
     - code
     - dbeaver
-    - discord
     - docker
     - docker-compose
     - fcitx-configtool
