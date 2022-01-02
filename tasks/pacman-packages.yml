@@ -3,25 +3,49 @@
   when: ansible_facts['distribution'] == "Archlinux"
   pacman: name={{item}}
   with_items:
+    - htop
+    - jq
+    - neovim
+    - tmux
+    - tree
+    - flameshot
+    - rofi
+    - kitty
+    - vlc
     - stow
     - diff-so-fancy
     - github-cli
     - tree-sitter
     - ttf-nerd-fonts-symbols
+    - docker
+    - docker-compose
     - xscape
-    - pyenv
+    - firefox
+    - firefox-developer-edition
+    - gparted
+    - obs-studio
+    - pavucontrol
+    - pulseaudio-bluetooth
+    - pulsemixer
     - xclip
-    - dunst
-    - acpi
     - exa
     - bat
+    - fzf
+    - youtube-dl
+    - zathura
+    - zathura-pdf-mupdf
+    - ffmpeg
+    - ffmpegthumbnailer
+    - neofetch
+    - nautilus
+    - ack
+    - pyenv
+    - dunst
+    - acpi
     - lua
     - luarocks
-    - fzf
-    - ack
     - adobe-source-han-sans-jp-fonts
     - aegisub
-    - alacritty
     - arandr
     - baobab
     - bleachbit
@@ -29,44 +53,20 @@
     - brightnessctl
     - code
     - dbeaver
-    - docker
-    - docker-compose
     - fcitx-configtool
     - fcitx-mozc
     - fcitx-qt5
     - feh
-    - ffmpeg
-    - ffmpegthumbnailer
-    - firefox
-    - firefox-developer-edition
-    - flameshot
-    - gparted
-    - htop
-    - jq
     - kdenlive
     - mpd
-    - nautilus
     - ncmpcpp
-    - neofetch
-    - neovim
     - newsboat
-    - obs-studio
-    - pavucontrol
-    - pulseaudio-bluetooth
-    - pulsemixer
     - rclone
     - redshift
     - remmina
     - signal-desktop
     - tlp
-    - tmux
-    - tree
     - udiskie
-    - youtube-dl
-    - zathura
-    - zathura-pdf-mupdf
-    - rofi
-    - kitty
 
   tags:
     - install
