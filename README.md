@@ -11,3 +11,5 @@ Ansible setup for my box
 
 `npm list -g -depth1`
 
+ ## Works with dotfiles
+ https://github.com/ultrox/dotfiles3
