@@ -3,6 +3,7 @@
   when: ansible_facts['distribution'] == "Archlinux"
   yay: name={{item}}
   with_items:
+    - key-mapper-git
     - postman-bin
     - slack-desktop
     - google-chrome
