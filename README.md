@@ -9,7 +9,17 @@ Ansible setup for my box
 
 ## Status
 
-`npm list -g -depth1`
+### NPM
+`npm list -g -depth1` global node packages
+`npm outdated -g`
+`npm update -g`
+
+### Yay (aur)
+`yay -Sua` update aur packages
+`yay -Qm` list aur packages
+
+## Pacman
+`pacman -Qqet | grep -v "$(pacman -Qqg base)" | grep -v "$(pacman -Qqm)"` pacman package
 
  ## Works with dotfiles
  https://github.com/ultrox/dotfiles3
