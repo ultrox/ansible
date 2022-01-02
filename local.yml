@@ -12,6 +12,7 @@
       - yarn
       - pnpm
       - typescript-language-server
+      - diagnostic-languageserver
       - typscript
       - ts-node
       - '@gridsome/cli'
@@ -22,7 +23,6 @@
       - lint-staged
       - plop
       - serve
-      - tldr
 
   pre_tasks:
     - name: Set espanso directory on Arch
