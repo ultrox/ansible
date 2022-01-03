@@ -1,5 +1,12 @@
 # ansible
 Ansible setup for my box
+export STOW_FOLDERS="bin,nvim,tmux,uwuntu,netflix,personal,i3,zsh,xkb"
+
+More then likely this needs to be installed 
+
+sudo pacman -S ansible sshpass openssh && \
+sudo systemctl enable sshd && \
+sudo systemctl start sshd
 
 ## Start
 
