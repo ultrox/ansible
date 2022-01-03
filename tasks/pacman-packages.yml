@@ -3,6 +3,7 @@
   when: ansible_facts['distribution'] == "Archlinux"
   pacman: name={{item}}
   with_items:
+    - yay
     - unrar
     - unzip
     - gnupg
