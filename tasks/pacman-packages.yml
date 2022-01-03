@@ -3,6 +3,11 @@
   when: ansible_facts['distribution'] == "Archlinux"
   pacman: name={{item}}
   with_items:
+    - unrar
+    - unzip
+    - gnupg
+    - trash-cli
+    - openssh
     - maim
     - peek
     - htop
