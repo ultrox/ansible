@@ -55,3 +55,9 @@ espanso-pack: ## Encrypt the system espanso files - overwrites repo files
 
 debug: ## Print out env vars
 	ansible-playbook local.yml -t debug
+
+ansible-kickoff: ## Adds ansible & stuff related for it to work
+	./scripts/setup-ansible
+
+clean-env:
+	./scripts/clean-env
