@@ -2,20 +2,21 @@ SHELL := /bin/bash
 .POSIX:
 # .PHONY: help
 
+# Thanks: https://github.com/dannyZyg/dzk-bootstrap/blob/main/Makefile
 help: ## Show this help
 	@egrep -h '\s##\s' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-docker-build: ## Build the arch docker container
-	docker build -t arch .
+docker-build: ## Build the ubuntu docker container
+	docker build -t ubuntu .
 
-docker-run: ## Enter the arch docker container
-	docker run -it --rm -u danny arch bash
+docker-run: ## Enter the ubuntu docker container
+	docker run -it --rm -u ultrox ubuntu bash
 
 docker-reload:
 	make docker-build && make docker-run
 
 docker-refresh:
-	docker build --no-cache -t arch . && make docker-run
+	docker build --no-cache -t ubuntu . && make docker-run
 
 all: ## Run the full ansible playbook
 	ansible-playbook local.yml --ask-vault-pass --ask-become-pass

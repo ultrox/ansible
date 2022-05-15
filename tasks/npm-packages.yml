@@ -1,7 +1,21 @@
 - name: Install common npm utilities
   become_user: "{{ lookup('vars', 'username') }}"
   npm: 'name={{item}} state=present global=yes'
-  with_items: '{{npm_g_pkgs}}'
+  with_items:
+    - yarn
+    - pnpm
+    - typescript-language-server
+    - diagnostic-languageserver
+    - typscript
+    - ts-node
+    - '@gridsome/cli'
+    - nodemon
+    - prettier
+    - get-graphql-schema
+    - husky
+    - lint-staged
+    - plop
+    - serve
   tags:
     - install
     - npm

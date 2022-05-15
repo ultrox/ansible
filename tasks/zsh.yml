@@ -1,15 +1,28 @@
 - name: Install ZSH
   become: true
-  pacman: name=zsh
-  when: ansible_facts['distribution'] == "Archlinux"
+  when: ansible_facts['distribution'] == "Ubuntu"
+  apt: name=zsh
   tags:
+    - tags_for_zsh_tasks 
     - install
     - dotfiles
     - zsh
+    
+- name: Install ZSH
+  become: true
+  pacman: name=zsh
+  when: ansible_facts['distribution'] == "Archlinux"
+  tags:
+    - tags_for_zsh_tasks 
+    - install
+    - dotfiles
+    - zsh
+
 - name: Change shell to zsh
   become: true
   shell: chsh -s $(which zsh)
   tags:
+    - tags_for_zsh_tasks 
     - install
     - dotfiles
     - zsh
@@ -29,3 +42,9 @@
     - install
     - zsh
     - dotfiles
+
+- name: Changing Default ZSH Theme to Agnoster
+  lineinfile:
+    path: "{{ lookup('env', 'HOME') }}/.zshrc"
+    regexp: '^ZSH_THEME='
+    line: 'ZSH_THEME="agnoster"'

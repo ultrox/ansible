@@ -1,0 +1,38 @@
+---
+# Prime's ubuntu ansible stuff
+# https://github.com/teddylear/ansible/
+- name: Setup i3-gaps
+  tags:
+    - install
+    - window_management
+    - ubuntu
+  block: 
+  - name: Install desktop stuff
+    become: true
+    apt:
+      pkg: 
+        - compton
+        - dconf-editor
+        - moreutils
+        - ubuntu-mate-desktop
+    when: ansible_facts['distribution'] == "Ubuntu"
+
+  - name: dconf i3 window manager
+    shell: dconf write /org/mate/desktop/session/required-components/windowmanager "'i3'"
+
+  - name: dconf i3 show-desktop-icons false
+    shell: dconf write /org/mate/desktop/background/show-desktop-icons "false"
+
+  - name: Add i3-gaps PPA
+    become: yes
+    ansible.builtin.apt_repository:
+      repo: 'ppa:regolith-linux/release'
+      state: present
+
+  - name: Install i3-gaps
+    become: yes
+    apt:
+      name: "i3-gaps"
+      update_cache: yes
+      state: latest
+    when: ansible_facts['distribution'] == "Ubuntu"

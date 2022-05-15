@@ -1,45 +1,43 @@
-- name: Creates n directory
+- name: Setup Node
+  tags:
+    - install
+    - node
+    - npm
   become_user: "{{ lookup('vars', 'username') }}"
-  file:
-    path: "{{ lookup('env', 'HOME') }}/.config/n"
-    state: directory
-  tags:
-    - install
-    - node
+  block:
+  - name: Download FNM
+    ansible.builtin.get_url: 
+      url: https://fnm.vercel.app/install
+      dest: "/tmp/fnm-install.sh"
+  - name: Install FNM
+    ansible.builtin.script: 
+      cmd: "{{ lookup('env', 'HOME') }}/fnm-install.sh --skip-shell"
+  - name: Install Current LTS Node Version
+    ansible.builtin.shell: 
+      cmd: zsh -ic "fnm install {{ node_lts }}"
+  - name: Instruct FNM To Use Node LTS Version
+    ansible.builtin.shell: 
+      cmd: zsh -ic "fnm use {{ node_lts }}"
 
-- name: Install nodejs and npm on Arch
-  become: true
-  when: ansible_distribution == "Archlinux"
-  pacman:
-    name: ["nodejs", "npm"]
-  tags:
-    - install
-    - node
+  - name: Install Prettier Globally
+    ansible.builtin.shell: 
+      cmd: zsh -ic "npm install -g prettier"
 
-- name: Install N with npm
-  become_user: "{{ lookup('vars', 'username') }}"
-  environment:
-    N_PREFIX: "{{ lookup('env', 'HOME') }}/.config/n"
-  npm:
-    name: n
-    global: yes
-  tags:
-    - install
-    - node
+  - name: Install common npm utilities
+    become_user: "{{ lookup('vars', 'username') }}"
+    npm: 'name={{item}} state=present global=yes'
+    with_items:
+      - yarn
+      - pnpm
+      - typscript
+      - ts-node
+      - typescript-language-server
+      - diagnostic-languageserver
+      - nodemon
+      - prettier
+      - get-graphql-schema
+      - husky
+      - lint-staged
+      - plop
+      - serve
 
-- name: Install node on Mac
-  when: ansible_distribution == "MacOSX"
-  become_user: "{{ lookup('vars', 'username') }}"
-  community.general.homebrew:
-    name: node
-    state: present
-  tags:
-    - install
-    - node
-
-- name: Install desired version of Node using N
-  become_user: "{{ lookup('vars', 'username') }}"
-  command: "{{ lookup('env', 'HOME') }}/.config/n/bin/n 15"
-  tags:
-    - install
-    - node

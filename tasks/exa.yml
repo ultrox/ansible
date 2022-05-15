@@ -1,0 +1,37 @@
+- name: Install Exa
+  tags: 
+    - install
+    - exa
+  block:   
+  - name: Get latest exa package URI
+    uri:
+      url: "https://api.github.com/repos/ogham/exa/releases/latest"
+      return_content: true
+    register: exa_latest
+    ignore_unreachable: yes
+
+  - name: Get exa package from repo
+    get_url:
+      url: "{{ exa_latest.json.assets.3.browser_download_url }}"
+      dest: "/tmp/exa.zip"
+    ignore_unreachable: yes
+
+  - name: Verify exa package download
+    stat:
+      path: "/tmp/exa.zip"
+    register: exa_package
+
+  - name: Unzip exa package
+    unarchive:
+      src: "/tmp/exa.zip"
+      dest: "/tmp"
+    ignore_errors: yes
+    when: exa_package.stat.exists == True
+
+  - name: Make exa binary executable
+    copy:
+      src: "/tmp/bin/exa"
+      dest: /usr/bin/exa
+      mode: '0755'
+    become: yes
+
