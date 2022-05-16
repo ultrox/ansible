@@ -9,12 +9,18 @@
     ansible.builtin.get_url: 
       url: https://fnm.vercel.app/install
       dest: "/tmp/fnm-install.sh"
+
+  - name: Changing perm of "of fnm file", adding "+x"
+    file: dest=/tmp/fnm-install.sh mode=+x
+
   - name: Install FNM
     ansible.builtin.script: 
       cmd: "{{ lookup('env', 'HOME') }}/fnm-install.sh --skip-shell"
+
   - name: Install Current LTS Node Version
     ansible.builtin.shell: 
       cmd: zsh -ic "fnm install {{ node_lts }}"
+
   - name: Instruct FNM To Use Node LTS Version
     ansible.builtin.shell: 
       cmd: zsh -ic "fnm use {{ node_lts }}"
