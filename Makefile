@@ -39,6 +39,9 @@ vim: ## Install vim and plugins
 ssh: ## Install existing ssh key
 	ansible-playbook local.yml -t ssh --ask-vault-pass --ask-become-pass
 
+ssh-seal: 
+	ansible-vault encrypt --vault-id SSH@prompt ./.ssh/*
+
 ssh-gen: ## Gen ssh key
 	ssh-keygen -o -a 100 -t ed25519 -f /tmp/id_rsa -C "this is ultrox main" -q -N ""
 
