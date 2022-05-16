@@ -91,7 +91,7 @@
     - terminal
     - mcfly
 - name: Install Mcfly Ubuntu
-  shell: curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sh -s -- --git cantino/mcfly
+  shell: curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sh -s -- --git cantino/mcfly --to ~/.local/bin 
   become: yes
   when: ansible_facts['distribution'] == "Ubuntu" and mcfly_installed is failed
   tags:
