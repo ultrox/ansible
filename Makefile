@@ -18,8 +18,12 @@ docker-reload:
 docker-refresh:
 	docker build --no-cache -t ubuntu . && make docker-run
 
+packages: 
+	ansible-playbook local.yml -t packages --ask-become-pass
+
 dygma:
 	ansible-playbook local.yml -t dygma
+
 all: ## Run the full ansible playbook
 	ansible-playbook local.yml --ask-vault-pass --ask-become-pass
 
@@ -41,7 +45,7 @@ vim: ## Install vim and plugins
 	ansible-playbook local.yml -t nvim --ask-become-pass
 
 ssh: ## Install existing ssh key
-	ansible-playbook local.yml -t ssh --ask-vault-pass --ask-become-pass
+	ansible-playbook local.yml -t ssh --ask-vault-pass 
 
 ssh-seal: 
 	ansible-vault encrypt --vault-id SSH@prompt ./.ssh/*
