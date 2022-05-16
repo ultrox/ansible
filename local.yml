@@ -57,6 +57,7 @@
     - include: tasks/zsh.yml
     - include: tasks/dotfiles.yml
     - include: tasks/node.yml
+    - include: tasks/git-setup.yml
     # - include: tasks/npm-packages.yml
     - include: tasks/nvim.yml
       include: tasks/docker.yml

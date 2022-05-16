@@ -30,6 +30,8 @@ node: ## Install Node, N and a version of node with N
 npm: ## Install npm packages
 	ansible-playbook local.yml -t npm
 
+git: 
+	ansible-playbook local.yml -t git
 node-npm: ## Install Node, N and npm packages
 	ansible-playbook local.yml -t node,npm --ask-become-pass
 
