@@ -1,17 +1,16 @@
 - name: Setup Bazecor
-- tags:
+  tags: 
     - dygma
     - install
-- block: 
+  become: false
+  block: 
   - name: "Ensure directory .local/bin"
     file: 
       path: "{{ lookup('env', 'HOME') }}/.local/bin"
       state: "directory"
-    tags: 
   - name: "Ensure directory exists"
     file: 
       path: "{{ lookup('env', 'HOME') }}/packages"
-      path: "{{ lookup('env', 'HOME') }}/.local/bin"
       state: "directory"
   - name: "Download Raise bazecor"
     get_url:

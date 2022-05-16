@@ -53,6 +53,7 @@
 
   tasks:
     - include: tasks/debug.yml
+    - include: tasks/dygma.yml
     - include: tasks/ssh.yml
     - include: tasks/zsh.yml
     - include: tasks/dotfiles.yml

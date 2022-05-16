@@ -18,6 +18,8 @@ docker-reload:
 docker-refresh:
 	docker build --no-cache -t ubuntu . && make docker-run
 
+dygma:
+	ansible-playbook local.yml -t dygma
 all: ## Run the full ansible playbook
 	ansible-playbook local.yml --ask-vault-pass --ask-become-pass
 
