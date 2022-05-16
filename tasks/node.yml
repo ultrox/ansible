@@ -11,11 +11,13 @@
       dest: "/tmp/fnm-install.sh"
 
   - name: Changing perm of "of fnm file", adding "+x"
-    file: dest=/tmp/fnm-install.sh mode=+x
+    file: 
+      path: /tmp/fnm-install.sh 
+      mode: "u=rwx,g=rx,o=r"
 
   - name: Install FNM
-    ansible.builtin.script: 
-      cmd: "{{ lookup('env', 'HOME') }}/fnm-install.sh --skip-shell"
+    shell: 
+      cmd: "/tmp/fnm-install.sh --skip-shell"
 
   - name: Install Current LTS Node Version
     ansible.builtin.shell: 
