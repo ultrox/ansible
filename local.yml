@@ -46,10 +46,11 @@
     - include: tasks/debug.yml
     - include: tasks/ssh.yml
     - include: tasks/zsh.yml
-    # - include: tasks/pacman-packages.yml
     - include: tasks/dotfiles.yml
     - include: tasks/node.yml
     - include: tasks/npm-packages.yml
     - include: tasks/nvim.yml
-    # - include: tasks/python.yml
+      include: tasks/docker.yml
     - include: tasks/exa.yml
+    # - include: tasks/pacman-packages.yml
+    # - include: tasks/python.yml
