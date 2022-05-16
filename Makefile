@@ -25,7 +25,7 @@ zsh: ## Install zsh
 	ansible-playbook local.yml -t zsh --ask-become-pass
 
 node: ## Install Node, N and a version of node with N
-	ansible-playbook local.yml -t node --ask-become-pass
+	ansible-playbook local.yml -t node
 
 npm: ## Install npm packages
 	ansible-playbook local.yml -t npm

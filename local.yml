@@ -1,12 +1,21 @@
 - hosts: localhost
-
   gather_facts: True
-
   environment:
     N_PREFIX: "{{ lookup('env', 'HOME') }}/.local"
   vars:
-    node_lts: "16.13.1"
-    # username: "???" pre_task will set this
+    npm_packages_installs:
+      - {name: yarn, command: yarn}
+      - {name: plop, command: plop}
+      - {name: typescript, command: typescript}
+      - {name: ts-node, command: ts-node}
+      - {name: nodemon, command: nodemon}
+      - {name: prettier, command: prettier}
+      - {name: husky, command: husky}
+      - {name: lint-staged, command: lint-staged}
+      - {name: serve, command: serve}
+      - {name: npm-check, command: npm-check}
+
+    lts_node: "16.13.1"
     dotfiles_git: "git@github.com:ultrox/dotfiles3.git"
     source_key: ".ssh/id_rsa"
     dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"

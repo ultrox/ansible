@@ -1,51 +1,66 @@
-- name: Setup Node
+# https://github.com/eckon/dotfiles/blob/master/ansible/roles/install/tasks/node.yml
+- name: Install fnm
+  ignore_errors: true 
+  shell: "$(curl -fsSL https://fnm.vercel.app/install | bash) && source {{ lookup('env', 'HOME') }}/.bashrc"
   tags:
     - install
+- name: Set node to v16
+  shell: fnm use 16.0.0 --install-if-missing
+  tags:
+    - install
+
+- name: Install node (via fnm)
+  tags: 
     - node
-    - npm
-  become_user: "{{ lookup('vars', 'username') }}"
+    - install
   block:
-  - name: Download FNM
-    ansible.builtin.get_url: 
-      url: https://fnm.vercel.app/install
-      dest: "/tmp/fnm-install.sh"
+    - name: Check if fnm exists
+      stat:
+        path: "{{ lookup('env', 'HOME') }}/.fnm"
+      register: fnm
 
-  - name: Changing perm of "of fnm file", adding "+x"
-    file: 
-      path: /tmp/fnm-install.sh 
-      mode: "u=rwx,g=rx,o=r"
+    - name: Install fnm
+      block:
+        - name: Download fnm installer script
+          get_url:
+            url: https://fnm.vercel.app/install
+            dest: /tmp/fnm-install.sh
 
-  - name: Install FNM
-    shell: 
-      cmd: "/tmp/fnm-install.sh --skip-shell"
+        - name: Execute fnm installer script
+          shell:
+            cmd: cat /tmp/fnm-install.sh | bash
 
-  - name: Install Current LTS Node Version
-    ansible.builtin.shell: 
-      cmd: zsh -ic "fnm install {{ node_lts }}"
+        - name: Install node v16 with fnm
+          shell:
+            cmd: |
+              eval "$(fnm env)"
+              fnm use "{{lts_node}}" --install-if-missing
+              fnm default $(node --version)
+          environment:
+            PATH: "{{ lookup('env', 'HOME') }}/.fnm:{{ lookup('env', 'PATH') }}"
+      when: not fnm.stat.exists
 
-  - name: Instruct FNM To Use Node LTS Version
-    ansible.builtin.shell: 
-      cmd: zsh -ic "fnm use {{ node_lts }}"
+- name: Install npm packages
+  tags: 
+    - node
+    - install
+  block:
+    - name: Check if npm packages exists
+      shell: which {{ item.command }}
+      register: npm_packages_register
+      changed_when: false
+      ignore_errors: true
+      loop: "{{ npm_packages_installs }}"
 
-  - name: Install Prettier Globally
-    ansible.builtin.shell: 
-      cmd: zsh -ic "npm install -g prettier"
-
-  - name: Install common npm utilities
-    become_user: "{{ lookup('vars', 'username') }}"
-    npm: 'name={{item}} state=present global=yes'
-    with_items:
-      - yarn
-      - pnpm
-      - typscript
-      - ts-node
-      - typescript-language-server
-      - diagnostic-languageserver
-      - nodemon
-      - prettier
-      - get-graphql-schema
-      - husky
-      - lint-staged
-      - plop
-      - serve
+    - name: Install npm packages
+      shell:
+        cmd: |
+          eval "$(fnm env)"
+          npm install {{ item.item.name }} -g
+      environment:
+        PATH: "{{ lookup('env', 'HOME') }}/.fnm:{{ lookup('env', 'PATH') }}"
+      loop: "{{ npm_packages_register.results }}"
+      loop_control:
+        label: "{{ item.item }}"
+      when: item.failed
 
