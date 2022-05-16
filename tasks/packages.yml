@@ -134,6 +134,7 @@
       - diff-so-fancy
   become: yes
 
+  #code-insider (binary)
 - name: Install VS code Insider
   tags:
     - vscode
