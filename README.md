@@ -1,3 +1,6 @@
+Radicaly fix Audio:
+https://pipewire.org/
+
 # ansible
 Ansible setup for my box
 export STOW_FOLDERS="bin,nvim,tmux,uwuntu,netflix,personal,i3,zsh,xkb"
