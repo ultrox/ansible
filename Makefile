@@ -18,6 +18,9 @@ docker-reload:
 docker-refresh:
 	docker build --no-cache -t ubuntu . && make docker-run
 
+fonts: 
+	ansible-playbook local.yml -t nerd
+
 packages: 
 	ansible-playbook local.yml -t packages --ask-become-pass
 

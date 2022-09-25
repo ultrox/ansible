@@ -1,0 +1,36 @@
+---
+# 1. Find font you like
+# 2. Find nerd version of it (patched)
+# 3. copy to /usr/share/fonts
+# 4. run: fc-cache -fv
+
+- name: Install Nerd Fonts
+  tags:
+    - install
+    - nerd
+  block:
+  - name: Update from git
+    ansible.builtin.git:
+      repo: "https://github.com/ryanoasis/nerd-fonts.git"
+      dest: "/tmp/nerd-fonts"
+      depth: 1
+      force: yes
+
+  - name: Select fonts to install
+    ansible.builtin.find:
+      recurse: yes
+      use_regex: yes
+      paths: "/tmp/nerd-fonts/patched-fonts"
+      patterns:
+        - '^.*?((?!Windows).)*?\.ttf$'
+    register: fonts_to_install
+
+  #- debug: var=fonts_to_install
+
+  - ansible.builtin.copy:
+      dest: "{{ lookup('env', 'HOME') }}/.local/share/fonts/{{ item.path | basename }}"
+      src: "{{ item.path }}"
+      remote_src: yes
+    loop: "{{ fonts_to_install.files }}"
+    notify:
+      - update font cache
