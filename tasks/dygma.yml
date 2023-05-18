@@ -1,0 +1,27 @@
+- name: Setup Bazecor
+  tags: 
+    - dygma
+    - install
+  become: false
+  block: 
+  - name: "Ensure directory .local/bin"
+    file: 
+      path: "{{ lookup('env', 'HOME') }}/.local/bin"
+      state: "directory"
+  - name: "Ensure directory exists"
+    file: 
+      path: "{{ lookup('env', 'HOME') }}/packages"
+      state: "directory"
+  - name: "Download Raise bazecor"
+    get_url:
+      url: "https://github.com/Dygmalab/Bazecor/releases/download/v0.3.4/Bazecor-0.3.4.AppImage"
+      dest: "{{ lookup('env', 'HOME') }}/packages/bazecor"
+  - name: "Make bazecor executable"
+    file:
+      path: "{{ lookup('env', 'HOME') }}/packages/bazecor"
+      mode: 0755
+  - name: "Symling to .local/bin"
+    file:
+      src: "{{ lookup('env', 'HOME') }}/packages/bazecor"
+      dest: "{{ lookup('env', 'HOME') }}/.local/bin/bazecor"
+      state: link

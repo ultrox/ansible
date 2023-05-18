@@ -1,0 +1,4 @@
+#!/bin/bash
+
+set -e
+function manswitch () { man $1 | less -p "^ +$2" }

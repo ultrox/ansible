@@ -1,0 +1,153 @@
+---
+- name: Add PPA's
+  tags:
+    - install
+    - linux
+    - packages
+  block: 
+  - name: Adding Ulauncher Repository
+    become: true
+    apt_repository:
+      repo: 'ppa:agornostal/ulauncher'
+  - name: Install GIT ppa
+    command: add-apt-repository ppa:git-core/ppa -y
+    become: yes
+  - name: Update APT cache
+    apt: 
+      update_cache: yes
+    become: yes
+
+- name: Install base packages
+  become: yes
+  tags:
+    - packages
+    - install
+    - linux
+  apt:
+    pkg: 
+      - neofetch
+      - ninja-build
+      - python3-pip
+      - moreutils
+      - lsof
+      - pavucontrol
+      - rofi
+      - gnupg
+      - git
+      - jq
+      - tmux
+      - tree
+      - htop
+      - flameshot
+      - trash-cli
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+      - lsb-release
+      - shotcut # video editor
+      - obs-studio
+      - transmission
+      - libreoffice
+      - vlc
+      - p7zip-full # unzip & unrar 
+      - sshpass
+      - build-essential
+      - stow
+      - ulauncher # productivity
+      - tmux 
+      - fzf
+      - xclip
+      - tldr
+      - fd-find 
+      - tree
+      - bat
+      - silversearcher-ag
+        #- ripgrep
+
+- name: Create symbolic link for fdfind to fd
+  tags:
+    - install
+    - packages
+  file:
+    src: /usr/bin/fdfind
+    dest: ~/.local/bin/fd
+    state: link
+  when: ansible_facts['distribution'] == "Ubuntu"
+
+- name: Update APT cache
+  tags: 
+    - install
+    - packages
+  apt: 
+    update_cache: yes
+  become: yes
+
+- name: Check for Mcfly Installation
+  shell: which mcfly
+  register: mcfly_installed
+  ignore_errors: yes
+  tags:
+    - packages
+    - install
+    - terminal
+    - mcfly
+- name: Install Mcfly Ubuntu
+  shell: curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sh -s -- --git cantino/mcfly --to ~/.local/bin 
+  become: yes
+  when: ansible_facts['distribution'] == "Ubuntu" and mcfly_installed is failed
+  tags:
+    - install
+    - mcfly
+    - ubuntu
+  # .zshrc needs to have eval "$(mcfly init zsh)"
+ 
+- name: Install Google Chrome
+  tags: 
+    - packages
+    - install
+    - chrome
+  block:
+  - name: Install Google Key
+    become: true
+    apt_key: 
+      url: 'https://dl.google.com/linux/linux_signing_key.pub'
+      state: present
+  - name: Install Google Repository
+    become: true
+    apt_repository:
+      repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
+      state: present
+      filename: google-chrome
+  - name: Install Google Chrome
+    become: true
+    apt:
+      name: google-chrome-stable
+
+- name: Install snaps
+  tags:
+    - packages
+    - install
+    - snaps
+  community.general.snap:
+    name:
+      - postman
+      - spotify
+      - diff-so-fancy
+  become: yes
+
+  #code-insider (binary)
+- name: Install VS code Insider
+  tags:
+    - vscode
+    - packages
+    - install
+  block:
+  - name: Download Visual Studio Code Insiders
+    get_url:
+      url: https://code.visualstudio.com/sha/download?build=insider&os=linux-deb-x64
+      dest: /tmp/vscode.deb
+  - name: Install Visual Studio Code Insiders
+    apt:
+      deb: /tmp/vscode.deb
+    become: yes
+

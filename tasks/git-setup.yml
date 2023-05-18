@@ -1,0 +1,32 @@
+---
+- name: Setup Git
+  tags: 
+    - git
+  block:
+  - name: Git personal setup email
+    git_config:
+      name: user.email
+      scope: global
+      value: "crashxx@gmail.com"
+  - name: Git personal setup name
+    git_config:
+      name: user.name
+      scope: global
+      value: "ultrox"
+
+#git config --list
+
+- name: Work
+  git_config:
+    name: user.email
+    scope: global
+    value: "crashxx@gmail.com"
+  tags:
+  - git-work
+- name: Git personal setup name
+  git_config:
+    name: user.name
+    scope: global
+    value: "Marko Vujanic"
+  tags:
+  - git-work

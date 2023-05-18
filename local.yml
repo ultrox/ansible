@@ -1,34 +1,37 @@
 - hosts: localhost
-
   gather_facts: True
-
   environment:
     N_PREFIX: "{{ lookup('env', 'HOME') }}/.local"
   vars:
+    npm_packages_installs:
+      - {name: yarn, command: yarn}
+      - {name: plop, command: plop}
+      - {name: typescript, command: typescript}
+      - {name: ts-node, command: ts-node}
+      - {name: nodemon, command: nodemon}
+      - {name: prettier, command: prettier}
+      - {name: husky, command: husky}
+      - {name: lint-staged, command: lint-staged}
+      - {name: serve, command: serve}
+      - {name: npm-check, command: npm-check}
+
+    lts_node: "16.13.1"
     dotfiles_git: "git@github.com:ultrox/dotfiles3.git"
     source_key: ".ssh/id_rsa"
     dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
-    npm_g_pkgs:
-      - yarn
-      - pnpm
-      - typescript-language-server
-      - diagnostic-languageserver
-      - typscript
-      - ts-node
-      - '@gridsome/cli'
-      - nodemon
-      - prettier
-      - get-graphql-schema
-      - husky
-      - lint-staged
-      - plop
-      - serve
 
   pre_tasks:
-    - name: Set espanso directory on Arch
+    - name: Update Apt
+      become: yes
+      apt:
+        force_apt_get: true
+        update_cache: true
+        state: present
+
+    - name: Set espanso directory on Ubuntu
       set_fact:
         espanso_dir: "{{ lookup('env', 'HOME') }}/.config/espanso"
-      when: ansible_facts['distribution'] == "Archlinux"
+      when: ansible_facts['distribution'] == "Ubuntu"
       tags:
         - always
 
@@ -47,19 +50,20 @@
         - debug
         - always
 
-    - name: Update repositories
-      become: true
-      pacman:
-        update_cache: yes
 
   tasks:
     - include: tasks/debug.yml
+    - include: tasks/dygma.yml
     - include: tasks/ssh.yml
     - include: tasks/zsh.yml
-    - include: tasks/pacman-packages.yml
     - include: tasks/dotfiles.yml
     - include: tasks/node.yml
-    - include: tasks/npm-packages.yml
+    - include: tasks/git-setup.yml
+    - include: tasks/packages.yml
+    # - include: tasks/nerd.yml
+    # - include: tasks/npm-packages.yml
     - include: tasks/nvim.yml
-    - include: tasks/python.yml
-    - include: tasks/yay.yml
+      include: tasks/docker.yml
+    - include: tasks/exa.yml
+    # - include: tasks/pacman-packages.yml
+    # - include: tasks/python.yml

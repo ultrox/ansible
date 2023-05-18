@@ -8,7 +8,7 @@
     - dotfiles
     - install
     - ssh
-- name: Install ssh key
+- name: Install Private ssh key
   become_user: "{{ lookup('vars', 'username') }}"
   copy:
     src: "{{ source_key }}"
@@ -17,8 +17,8 @@
     mode: 0600
   tags:
     - install
-    - ssh
     - dotfiles
+    - ssh
 
 - name: Install public ssh key
   become_user: "{{ lookup('vars', 'username') }}"
@@ -29,6 +29,6 @@
     mode: 0600
   tags:
     - install
-    - ssh
     - dotfiles
+    - ssh
 
